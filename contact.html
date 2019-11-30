@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/main.css">
 
   <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
@@ -28,7 +29,7 @@
 
   <link rel="stylesheet" href="css/style.css">
 
-
+<script src="js/kapcsolat.js"></script>
 
 </head>
 
@@ -61,9 +62,7 @@
           </div>
           <div class="col-12 col-lg-6 ml-auto d-flex">
             <div class="ml-md-auto top-social d-none d-lg-inline-block">
-              <a href="#" class="d-inline-block p-3"><span class="icon-facebook"></span></a>
-                <a href="#" class="d-inline-block p-3"><span class="icon-twitter"></span></a>
-                <a href="#" class="d-inline-block p-3"><span class="icon-instagram"></span></a>
+              <a href="https://www.facebook.com/simonffykalmanmuvhaz/" class="d-inline-block p-3"><span class="icon-facebook"></span></a>
             </div>
             <form action="#" class="search-form d-inline-block">
 
@@ -128,40 +127,33 @@
 
           <div class="col-lg-12">
             <div class="section-title mb-5">
-              <h2>Contact Us</h2>
+              <h2>Kapcsolatfelvétel</h2>
             </div>
-            <form method="post">
+            <form name="kapcsolat" action="php/kapcsolat.php" onsubmit="return ellenoriz();" method="post">
+                    <div class="row">
+              <div class="col-md-6 form-group">
+                  <label for="eaddress">Név</label>
+                  <input type="text" id="nev" name="nev" class="form-control form-control-lg">
+              </div>
+              </div>
 
                   <div class="row">
                       <div class="col-md-6 form-group">
-                          <label for="fname">First Name</label>
-                          <input type="text" id="fname" class="form-control form-control-lg">
-                      </div>
-                      <div class="col-md-6 form-group">
-                          <label for="lname">Last Name</label>
-                          <input type="text" id="lname" class="form-control form-control-lg">
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-md-6 form-group">
-                          <label for="eaddress">Email Address</label>
-                          <input type="text" id="eaddress" class="form-control form-control-lg">
-                      </div>
-                      <div class="col-md-6 form-group">
-                          <label for="tel">Tel. Number</label>
-                          <input type="text" id="tel" class="form-control form-control-lg">
+                          <label for="eaddress">E-mail cím</label>
+                          <input type="text" id="email" name="email" class="form-control form-control-lg">
                       </div>
                   </div>
                   <div class="row">
                       <div class="col-md-12 form-group">
-                          <label for="message">Message</label>
-                          <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
+                          <label for="message">Üzenet</label>
+                          <textarea id="szoveg" name="szoveg" cols="30" rows="10" class="form-control"></textarea>
                       </div>
                   </div>
 
                   <div class="row">
                       <div class="col-12">
-                          <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+                          <input type="submit" value="Küldés" id="kuld" class="btn btn-primary py-3 px-5">
+                          <input type="button" value="Ellenőriz" onclick="ellenoriz()" class="btn btn-primary py-3 px-5">
                       </div>
                   </div>
 
