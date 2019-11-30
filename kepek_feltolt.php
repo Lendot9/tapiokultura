@@ -1,8 +1,36 @@
-<!DOCTYPE html>
+<?php
+    // Alkalmazás logika:
+    include('config.inc.php');
+    $uzenet = array();
+
+    // Űrlap ellenőrzés:
+    if (isset($_POST['kuld'])) {
+        //print_r($_FILES);
+        foreach($_FILES as $fajl) {
+            if ($fajl['error'] == 4);   // Nem töltött fel fájlt
+            elseif (!in_array($fajl['type'], $MEDIATIPUSOK))
+                $uzenet[] = " Nem megfelelő típus: " . $fajl['name'];
+            elseif ($fajl['error'] == 1   // A fájl túllépi a php.ini -ben megadott maximális méretet
+                        or $fajl['error'] == 2   // A fájl túllépi a HTML űrlapban megadott maximális méretet
+                        or $fajl['size'] > $MAXMERET)
+                $uzenet[] = " Túl nagy állomány: " . $fajl['name'];
+            else {
+                $vegsohely = $MAPPA.strtolower($fajl['name']);
+                if (file_exists($vegsohely))
+                    $uzenet[] = " Már létezik: " . $fajl['name'];
+                else {
+                    move_uploaded_file($fajl['tmp_name'], $vegsohely);
+                    $uzenet[] = ' Ok: ' . $fajl['name'];
+                }
+            }
+        }
+    }
+    // Megjelenítés logika:
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Kapcsolat</title>
+  <title>Képek</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,7 +44,6 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="css/main.css">
 
   <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
@@ -29,7 +56,6 @@
 
   <link rel="stylesheet" href="css/style.css">
 
-<script src="js/kapcsolat.js"></script>
 
 </head>
 
@@ -121,49 +147,32 @@
 
 
 
-    <div class="site-section bg-light">
-      <div class="container">
-        <div class="row">
+    <div class="site-section">
 
-          <div class="col-lg-12">
-            <div class="section-title mb-5">
-              <h2>Kapcsolatfelvétel</h2>
-            </div>
-            <form name="kapcsolat" action="php/kapcsolat.php" onsubmit="return ellenoriz();" method="post">
-                    <div class="row">
-              <div class="col-md-6 form-group">
-                  <label for="eaddress">Név</label>
-                  <input type="text" id="nev" name="nev" class="form-control form-control-lg">
-              </div>
-              </div>
+      <h1 align = "center">Feltöltés a galériába:</h1>
+  <?php
+      if (!empty($uzenet))
+      {
+          echo '<ul>';
+          foreach($uzenet as $u)
+              echo "<li>$u</li>";
+          echo '</ul>';
+      }
+  ?>
+      <form action="kepek_feltolt.php" method="post"
+                  enctype="multipart/form-data" align = "center">
+          <label>Első:
+              <input type="file" name="elso" required>
+          </label><p>
+          <label>Második:
+              <input type="file" name="masodik">
+          </label><p>
+          <label>Harmadik:
+              <input type="file" name="harmadik">
+          </label><p>
+          <input type="submit" name="kuld">
+        </form>
 
-                  <div class="row">
-                      <div class="col-md-6 form-group">
-                          <label for="eaddress">E-mail cím</label>
-                          <input type="text" id="email" name="email" class="form-control form-control-lg">
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-md-12 form-group">
-                          <label for="message">Üzenet</label>
-                          <textarea id="szoveg" name="szoveg" cols="30" rows="10" class="form-control"></textarea>
-                      </div>
-                  </div>
-
-                  <div class="row">
-                      <div class="col-12">
-                          <input type="submit" value="Küldés" id="kuld" class="btn btn-primary py-3 px-5">
-                          <input type="button" value="Ellenőriz" onclick="ellenoriz()" class="btn btn-primary py-3 px-5">
-                      </div>
-                  </div>
-
-            </form>
-          </div>
-
-        </div>
-
-
-      </div>
     </div>
 
 
@@ -175,11 +184,11 @@
         <div class="row">
           <div class="col-12">
             <div class="copyright">
-                <p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
+              <p>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  </p>
             </div>
           </div>
         </div>

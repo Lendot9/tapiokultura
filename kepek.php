@@ -1,8 +1,26 @@
-<!DOCTYPE html>
+<?php
+    // Alkalmazás logika:
+    include('config.inc.php');
+
+    // adatok összegyűjtése:
+    $kepek = array();
+    $olvaso = opendir($MAPPA);
+    while (($fajl = readdir($olvaso)) !== false) {
+        if (is_file($MAPPA.$fajl)) {
+            $vege = strtolower(substr($fajl, strlen($fajl)-4));
+            if (in_array($vege, $TIPUSOK)) {
+                $kepek[$fajl] = filemtime($MAPPA.$fajl);
+            }
+        }
+    }
+    closedir($olvaso);
+
+    // Megjelenítés logika:
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Kapcsolat</title>
+  <title>Képek</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,7 +34,6 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="css/main.css">
 
   <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
@@ -29,7 +46,11 @@
 
   <link rel="stylesheet" href="css/style.css">
 
-<script src="js/kapcsolat.js"></script>
+  <style type="text/css">
+      div#galeria {margin: 0 auto; width: 620px;}
+      div.kep { display: inline-block; }
+      div.kep img { width: 200px; }
+  </style>
 
 </head>
 
@@ -121,49 +142,27 @@
 
 
 
-    <div class="site-section bg-light">
-      <div class="container">
-        <div class="row">
+    <div class="site-section">
 
-          <div class="col-lg-12">
-            <div class="section-title mb-5">
-              <h2>Kapcsolatfelvétel</h2>
-            </div>
-            <form name="kapcsolat" action="php/kapcsolat.php" onsubmit="return ellenoriz();" method="post">
-                    <div class="row">
-              <div class="col-md-6 form-group">
-                  <label for="eaddress">Név</label>
-                  <input type="text" id="nev" name="nev" class="form-control form-control-lg">
-              </div>
-              </div>
-
-                  <div class="row">
-                      <div class="col-md-6 form-group">
-                          <label for="eaddress">E-mail cím</label>
-                          <input type="text" id="email" name="email" class="form-control form-control-lg">
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-md-12 form-group">
-                          <label for="message">Üzenet</label>
-                          <textarea id="szoveg" name="szoveg" cols="30" rows="10" class="form-control"></textarea>
-                      </div>
-                  </div>
-
-                  <div class="row">
-                      <div class="col-12">
-                          <input type="submit" value="Küldés" id="kuld" class="btn btn-primary py-3 px-5">
-                          <input type="button" value="Ellenőriz" onclick="ellenoriz()" class="btn btn-primary py-3 px-5">
-                      </div>
-                  </div>
-
-            </form>
+      <div id="galeria">
+      <h1>Galéria</h1>
+      <?php
+      arsort($kepek);
+      foreach($kepek as $fajl => $datum)
+      {
+      ?>
+          <div class="kep">
+              <a href="<?php echo $MAPPA.$fajl ?>">
+                  <img src="<?php echo $MAPPA.$fajl ?>">
+              </a>
+              <p>Név:  <?php echo $fajl; ?></p>
+              <p>Dátum:  <?php echo date($DATUMFORMA, $datum); ?></p>
           </div>
-
-        </div>
-
-
+      <?php
+      }
+      ?>
       </div>
+
     </div>
 
 
@@ -175,11 +174,11 @@
         <div class="row">
           <div class="col-12">
             <div class="copyright">
-                <p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
+              <p>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  </p>
             </div>
           </div>
         </div>
